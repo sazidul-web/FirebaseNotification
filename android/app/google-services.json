@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "314837175054",
+    "project_id": "fir-tutorials-355df",
+    "storage_bucket": "fir-tutorials-355df.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:314837175054:android:6877f68243351157d8a55f",
+        "android_client_info": {
+          "package_name": "com.example.firebasepraktis"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBUh1vKRt1qDADVVTB_BrTVur41An3KRZU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
