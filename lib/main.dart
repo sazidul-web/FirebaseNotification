@@ -16,6 +16,9 @@ void main() async {
 @pragma('vm:entry-point')
 Future<void> _firebaseMessagingBackgroundHandeler(RemoteMessage message) async {
   await Firebase.initializeApp();
+  print(message.notification!.title.toString());
+  print(message.notification!.body.toString());
+  print(message.data.toString());
 }
 
 class MyApp extends StatelessWidget {

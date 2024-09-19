@@ -12,10 +12,11 @@ class _HomepageState extends State<Homepage> {
   void initState() {
     super.initState();
     notificatonService.requestNotificationPermission();
-    notificatonService.firebaseInit();
+    notificatonService.firebaseInit(context);
+    notificatonService.SetupIntarfaceMessage(context);
     notificatonService.isTokenRefresh();
     notificatonService.getDeviceToken().then((value) {
-      print('Device token');
+      print('Device token==========================================');
       print(value);
     });
   }

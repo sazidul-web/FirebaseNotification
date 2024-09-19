@@ -1,4 +1,8 @@
+import 'dart:io';
+
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:firebasepraktis/MessageScreen.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
@@ -36,10 +40,19 @@ class NotificationService {
   final FlutterLocalNotificationsPlugin _flutterLocalNotificationsPlugin =
       FlutterLocalNotificationsPlugin();
 
-  void firebaseInit() {
+  void firebaseInit(BuildContext context) {
     FirebaseMessaging.onMessage.listen((message) {
-      RemoteNotification? notification = message.notification;
-      if (notification != null) {
+      if (kDebugMode) {
+        print(message.notification?.title);
+        print(message.notification?.body);
+        print(message.data.toString());
+        print(message.data['name']);
+        print(message.data['id']);
+      }
+      if (Platform.isAndroid) {
+        initLocalNotification(context, message);
+        showNotification(message);
+      } else {
         showNotification(message);
       }
     });
@@ -85,7 +98,8 @@ class NotificationService {
     );
   }
 
-  void initLocalNotification(BuildContext context) async {
+  void initLocalNotification(
+      BuildContext context, RemoteMessage message) async {
     var androidInitializationSettings =
         const AndroidInitializationSettings('@mipmap/ic_launcher');
     var iosInitializationSettings = const DarwinInitializationSettings();
@@ -95,6 +109,33 @@ class NotificationService {
       iOS: iosInitializationSettings,
     );
 
-    await _flutterLocalNotificationsPlugin.initialize(initializationSettings);
+    await _flutterLocalNotificationsPlugin.initialize(initializationSettings,
+        onDidReceiveBackgroundNotificationResponse: (payload) {
+      HandelMessage(context, message);
+    });
+  }
+
+  Future<void> SetupIntarfaceMessage(BuildContext context) async {
+    RemoteMessage? initialmessage =
+        await FirebaseMessaging.instance.getInitialMessage();
+    if (initialmessage != null) {
+      HandelMessage(context, initialmessage);
+    }
+    FirebaseMessaging.onMessageOpenedApp.listen((event) {
+      HandelMessage(context, event);
+    });
+  }
+
+  void HandelMessage(BuildContext context, RemoteMessage message) {
+    if (message.data['name'] == 'sazidul') {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => Messagescreen(
+            id: message.data['id'],
+          ),
+        ),
+      );
+    }
   }
 }
